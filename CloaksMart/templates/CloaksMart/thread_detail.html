@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta http-equiv="Content-Style-Type" content="text/css">
+      <title> Cloaks Mart: thread_list</title>
+      <meta name="Generator" content="Cocoa HTML Writer">
+      <meta name="CocoaVersion" content="2022.7">
+      
+      <style type="text/css">
+      
+      .imgBox {
+        display: inline-block;
+        overflow: hidden;
+      }
+      .imgBox img {
+        display: block; 
+        transition: .3s ease-in-out;
+      }
+      .imgBox:hover img {
+        transform: scale(1.2);
+        
+      } 
+      
+      /* width */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      /* Track */
+      ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey; 
+        border-radius: 10px;
+      }
+     
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #155D21; 
+        border-radius: 10px;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #155D21; 
+      }
+      
+      .scrollable-div {
+      height: 750px; /* set a fixed height for the div */
+      overflow-y: scroll; /* enable vertical scrollbar */
+       
+    }
+    
+    a {
+      text-decoration: none;
+      display: inline-block;
+      padding: 8px 16px;
+    }
+    
+    a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+    
+    .previous {
+      background-color: #f1f1f1;
+      color: black;
+    }
+    
+    .next {
+      background-color: #f1f1f1;
+      color: black;
+    }
+    
+    .round {
+      border-radius: 50%;
+    }
+    
+    /* Container holding the image and the text */
+    .container {
+      position: relative;
+      text-align: center;
+      color: black;
+    }
+    
+    /* Bottom left text */
+    .bottom-left {
+      position: absolute;
+      bottom: 8px;
+      left: 16px;
+    }
+    
+    /* Top left text */
+    .top-left {
+      position: absolute;
+      top: 20%;
+      left: 25%;
+    }
+    
+    /* Top right text */
+    .top-right {
+      position: absolute;
+      top: 8px;
+      right: 16px;
+    }
+    
+    /* Bottom right text */
+    .bottom-right {
+      position: absolute;
+      bottom: 8px;
+      right: 16px;
+    }
+    
+    /* Centered text */
+    .centered {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+        
+    .nosifer-regular {
+  font-family: "Nosifer", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+    .nosifer-body {
+  font-family: "Nosifer", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+      </style>
+
+
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="{% static 'styles.css' %}">  
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-highway.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-safety.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-vivid.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet">
+</head>  
+<body style="background-color:#1E283B;">
+           
+
+{% block content %}
+  <h1>{{ object.title }}</h1>
+
+  {% for post in object.post_set.all %}
+    <div class="post">
+      {{ post.content }}
+      <p>{{ post.created_at }}</p>
+    </div>
+  {% endfor %}
+
+  <hr>
+
+  <h3>Add New Post</h3>
+  <form method="post" action="{% url 'create_post' pk=object.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+  </form>
+{% endblock %}
+
+<script type="text/javascript">
+
+</script> 
+
+
+</body>
+</html>

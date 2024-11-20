@@ -1,0 +1,396 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moralis Auth Django Demo</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital@1&display=swap" rel="stylesheet">
+    
+</head>
+<body style="background-color:#1E283B;">
+    <div>
+
+    {% if user.is_authenticated %}
+        <h1>Welcome Moralis Web3 User, {{ user.username }} !</h1>
+        <a href="{% url 'logout' %}?next={% url 'moralis_auth' %}">Logout</a>
+        <br/>
+        <a href="{% url 'my_profile' %}"> My profile </a>
+    {% else %}
+        <h1>Moralis Web3 Login Django demo</h1>
+        <button class="btn" id="auth-metamask">Login with Moralis Web3 API</button>
+    {% endif %}
+    </div>
+    
+    <!-- hide this div unless post button is clicked -->
+    <div>
+         <form action="/CloaksMart/forum_home" method="post" id="form" style= "overflow-wrap: break-word; font-size: 1em; color:white;">
+             <input type="submit" value="Create Post">
+             {% csrf_token %}
+             {{ post_form.as_p}}
+             
+             
+         </form>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+         {{ post_form.media.js }}
+         {{ post_form.media.css }}
+    </div>
+
+    
+    <div class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/CloaksMart/forum_home" method="post" id="form" style= "overflow-wrap: break-word; font-size: 1em; color:white;">
+                <input type="submit" value="Create Post">
+                {% csrf_token %}
+                {{ post_form.as_p}}
+                
+                
+            </form>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            {{ post_form.media.js }}
+            {{ post_form.media.css }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <header>
+        <!--NavBar Section-->
+        <div class="navbar">
+            <nav class="navigation hide" id="navigation">
+                <span class="close-icon" id="close-icon" onclick="showIconBar()"><i class="fa fa-close"></i></span>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="forums.html">Forums</a></li>
+                    <li class="nav-item"><a href="posts.html">Posts</a></li>
+                    <li class="nav-item"><a href="detail.html">Detail</a></li>
+                </ul>
+            </nav>
+            <a class="bar-icon" id="iconBar" onclick="hideIconBar()"><i class="fa fa-bars"></i></a>
+            <div class="brand">My Forum</div>
+        </div>
+        <!--SearchBox Section-->
+        <div class="search-box">
+            <div>
+                <select name="" id="">
+                    <option value="Everything">Everything</option>
+                    <option value="Titles">Titles</option>
+                    <option value="Descriptions">Descriptions</option>
+                </select>
+                <input type="text" name="q" placeholder="search ...">
+                <button><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </header>
+    
+    <!--- misc category -->
+        <div class="subforum">
+            <div class="subforum-title">
+                <h1> <a href="{% url "CloaksMart:forum_posts" %}"> Miscellaneous </a></h1>
+            </div>
+            
+            <div class="container" id="misc_category">
+                <div class="subforum-row">
+                    <div class="subforum-icon subforum-column center">
+                        <i class="fa fa-car center"></i>
+                    </div>
+                    <div class="subforum-description subforum-column">
+                        <h4><a href="{% url "CloaksMart:forum_detail" %}"> <p></p> </a></h4>
+                        <p></p>
+                    </div>
+                    <div class="subforum-stats subforum-column center">
+                        <span>24 Posts | 12 Topics</span>
+                    </div>
+                    <div class="subforum-info subforum-column">
+                        <b><a href="">Created </a></b> by <a href=""> <p style="display:inline"></p> </a> 
+                        <br>on <small> <p style="display:inline"></p> </small>
+                    </div>
+                </div>
+            </div>
+    </div>
+    
+    
+   <!--- buy/sell/trade category -->
+      
+        <div class="subforum">
+            <div class="subforum-title">
+                <h1>Buy &centerdot; Sell &centerdot; Trade &centerdot; Cloaks</h1>
+            </div>
+            
+            <div class="container" id="bst_category">  
+                <div class="subforum-row">
+                    <div class="subforum-icon subforum-column center">
+                        <i class="fa fa-car center"></i>
+                    </div>
+                    <div class="subforum-description subforum-column">
+                        <h4><a href="#"> <p></p> </a></h4>
+                        <p></p>
+                    </div>
+                    <div class="subforum-stats subforum-column center">
+                        <span>24 Posts | 12 Topics</span>
+                    </div>
+                    <div class="subforum-info subforum-column">
+                        <b><a href="">Created</a></b> by <a href=""><p style="display:inline;"></p></a> 
+                        <br>on <small><p style="display:inline"></p></small>
+                    </div>
+                </div>
+            </div> 
+    </div>
+          
+        
+        <div class="subforum">
+            <div class="subforum-title">
+                <h1>General Information</h1>
+            </div>
+            <div class="subforum-row">
+                <div class="subforum-icon subforum-column center">
+                    <i class="fa fa-car center"></i>
+                </div>
+                <div class="subforum-description subforum-column">
+                    <h4><a href="#">Description Title</a></h4>
+                    <p>Description Content: let's try to be cool, otherwise,w at 'sthe point in libing together with people youdont' live.</p>
+                </div>
+                <div class="subforum-stats subforum-column center">
+                    <span>24 Posts | 12 Topics</span>
+                </div>
+                <div class="subforum-info subforum-column">
+                    <b><a href="">Last post</a></b> by <a href="">JustAUser</a> 
+                    <br>on <small>12 Dec 2020</small>
+                </div>
+            </div>
+            <hr class="subforum-devider">
+            <div class="subforum-row">
+                <div class="subforum-icon subforum-column center">
+                    <i class="fa fa-car center"></i>
+                </div>
+                <div class="subforum-description subforum-column">
+                    <h4><a href="#">Description Title</a></h4>
+                    <p>Description Content: let's try to be cool, otherwise,w at 'sthe point in libing together with people youdont' live.</p>
+                </div>
+                <div class="subforum-stats subforum-column center">
+                    <span>24 Posts | 12 Topics</span>
+                </div>
+                <div class="subforum-info subforum-column">
+                    <b><a href="">Last post</a></b> by <a href="">JustAUser</a> 
+                    <br>on <small>12 Dec 2020</small>
+                </div>
+            </div>
+            <hr class="subforum-devider">
+            <div class="subforum-row">
+                <div class="subforum-icon subforum-column center">
+                    <i class="fa fa-car center"></i>
+                </div>
+                <div class="subforum-description subforum-column">
+                    <h4><a href="#">Description Title</a></h4>
+                    <p>Description Content: let's try to be cool, otherwise,w at 'sthe point in libing together with people youdont' live.</p>
+                </div>
+                <div class="subforum-stats subforum-column center">
+                    <span>24 Posts | 12 Topics</span>
+                </div>
+                <div class="subforum-info subforum-column">
+                    <b><a href="">Last post</a></b> by <a href="">JustAUser</a> 
+                    <br>on <small>12 Dec 2020</small>
+                </div>
+            </div>
+            <hr class="subforum-devider">
+            <div class="subforum-row">
+                <div class="subforum-icon subforum-column center">
+                    <i class="fa fa-car center"></i>
+                </div>
+                <div class="subforum-description subforum-column">
+                    <h4><a href="#">Description Title</a></h4>
+                    <p>Description Content: let's try to be cool, otherwise,w at 'sthe point in libing together with people youdont' live.</p>
+                </div>
+                <div class="subforum-stats subforum-column center">
+                    <span>24 Posts | 12 Topics</span>
+                </div>
+                <div class="subforum-info subforum-column">
+                    <b><a href="">Last post</a></b> by <a href="">JustAUser</a> 
+                    <br>on <small>12 Dec 2020</small>
+                </div>
+            </div>
+
+           
+        </div>
+        <!---->
+    </div>
+
+    <!-- Forum Info -->
+    <div class="forum-info">
+        <div class="chart">
+            MyForum - Stats &nbsp;<i class="fa fa-bar-chart"></i>
+        </div>
+        <span><u>5,369</u> Posts in <u>48</u> Topics by <u>8,124</u> Members.</span><br>
+        <span>Latest post: <b><a href="">Random post</a></b> on Dec 15 2021 By <a href="">RandomUser</a></span>.<br>
+        <span>Check <a href="">the latest posts</a> .</span><br>
+    </div>
+       
+   
+    
+  
+         
+    <script>
+    var posts_db = [
+        {% for row in posts_db %}
+            {%if not forloop.first%}, {% endif %}
+            {
+                "title":"{{row.title}}",
+                "content":"{{row.content}}",
+                "created_at":"{{row.created_at}}",
+                "created_by":"{{row.created_by}}",
+                "category":"{{row.category}}"
+                
+            }
+        {% endfor %}
+        ]
+    
+    
+     const misc_category = document.querySelector("#misc_category");
+     const bst_category = document.querySelector("#bst_category");
+     let counter = 0;   
+     function displayPosts(){
+       
+      const startIndex = 0;
+      const endIndex = 4;
+      
+      for (let i=startIndex; i<endIndex; i++){
+              if(posts_db[i]["category"] == "misc"){
+                      let card = misc_category.children[0], newCard=card.cloneNode(true),ps=newCard.querySelectorAll("p"), url= newCard.querySelector("a");
+                      
+                     
+                      ps[0].innerText = posts_db[i]["title"];
+                      ps[1].innerText = posts_db[i]["content"];
+                      ps[2].innerText = posts_db[i]["created_by"];
+                      ps[3].innerText = posts_db[i]["created_at"];
+                      
+                      misc_category.appendChild(newCard);    
+                  } 
+                  
+              if(posts_db[i]["category"] == "buySellTrade"){
+                      let card = bst_category.children[0], newCard=card.cloneNode(true),ps=newCard.querySelectorAll("p"), url= newCard.querySelector("a");
+                      
+                     
+                      ps[0].innerText = posts_db[i]["title"];
+                      ps[1].innerText = posts_db[i]["content"];
+                      ps[2].innerText = posts_db[i]["created_by"];
+                      ps[3].innerText = posts_db[i]["created_at"];
+                     
+                      bst_category.appendChild(newCard);    
+                  } 
+                  
+                  
+             }
+             
+             document.getElementById('misc_category').removeChild(document.getElementById('misc_category').getElementsByTagName('div')[0]);
+             document.getElementById('bst_category').removeChild(document.getElementById('bst_category').getElementsByTagName('div')[0]);
+              
+      }
+      
+    
+    
+    
+    displayPosts();
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module">
+    import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.min.js";
+    
+    {% if user.is_authenticated %}
+    {% else %}
+ 
+    const elBtnMetamask = document.getElementById('auth-metamask');
+
+    const handleApiPost = async (endpoint, params) => {
+      const result = await axios.post(`${endpoint}`, params, {
+        headers: {
+          'Content-Type': 'application/json',
+          "X-CSRFToken": '{{ csrf_token }}'
+        },
+      });
+    
+      return result.data;
+    };
+
+    const requestMessage = (account, chain) =>
+      handleApiPost('{% url 'CloaksMart:request_message' %}', {
+        address: account,
+        chain: chain,
+        network: 'evm',
+      });
+
+    const verifyMessage = (message, signature) =>
+      handleApiPost('{% url 'CloaksMart:verify_message' %}', {
+        message,
+        signature,
+        network: 'evm',
+      });
+
+    const connectToMetamask = async () => {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+    
+      const [accounts, chainId] = await Promise.all([
+        provider.send('eth_requestAccounts', []),
+        provider.send('eth_chainId', []),
+      ]);
+
+      const signer = provider.getSigner();
+      
+      return { signer, chain: chainId, account: accounts[0] };
+    };
+
+    const handleAuth = async () => {
+      // Connect to Metamask
+      const { signer, chain, account } = await connectToMetamask();
+      console.log("signer", signer, "account", account, "chain", chain)
+
+      if (!account) {
+        throw new Error('No account found');
+      }
+      if (!chain) {
+        throw new Error('No chain found');
+      }
+      
+      const { message } = await requestMessage(account, chain);
+      const signature = await signer.signMessage(message);
+      const { user } = await verifyMessage(message, signature);
+      console.log(user)
+      if (user) {
+        location.reload();
+      }
+      else{
+        alert("authentication error")
+      }
+    };
+
+
+    function init() {
+      elBtnMetamask.addEventListener('click', async () => {
+        handleAuth().catch((error) => console.log(error));
+      });
+    }
+
+    window.addEventListener('load', () => {
+      init();
+    });
+
+    </script>
+    {% endif %}
+    
+</body>
+</html>

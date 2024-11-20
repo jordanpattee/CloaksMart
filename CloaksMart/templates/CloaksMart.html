@@ -1,0 +1,647 @@
+{% load static %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title> Cloaks Mart: Marketplace</title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2022.7">
+  
+  <style type="text/css">
+  
+  .imgBox {
+    display: inline-block;
+    overflow: hidden;
+  }
+  .imgBox img {
+    display: block; 
+    transition: .3s ease-in-out;
+  }
+  .imgBox:hover img {
+    transform: scale(1.2);
+  } 
+  
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+  }
+ 
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #155D21; 
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #155D21; 
+  }
+  
+  .scrollable-div {
+  height: 500px; /* set a fixed height for the div */
+  overflow-y: scroll; /* enable vertical scrollbar */
+   
+}
+
+
+
+
+ #elementToHover {
+            display: inline-block;
+            position: relative;
+        }
+
+        #elementToPopup {
+            display: none;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background-color: #323439;
+            color: #e2e6e3;
+            padding: 8px;
+            border-radius: 5px;
+            border: 2mm ridge #c48d56;
+            z-index: 99998;
+        }
+
+.collapsible {
+  background-color: #1E283B;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 15%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 18px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: #1E283B;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.content {
+  padding: 0 0px;
+  display: none;
+  overflow: hidden;
+  
+}
+
+#loading {
+    background-image: url('../../static/site_images/Loading_17442.gif');
+    background-size: cover;
+    position: absolute;
+    top: 25%;
+    left: 40%;
+    width: 500px;
+    height: 500px;
+    z-index: 99999;
+    display: inline-block;
+    padding: 5px;
+    
+}
+
+.popMeta{}
+.hoverMeta{}
+  </style>
+
+</head>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">  
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-highway.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-safety.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-vivid.css">
+    
+<body style="background-color:#1E283B;">
+
+
+<header>
+<header>
+
+<a href="{% url 'CloaksMart:codex' %}" class="btn btn-outline-light fs-3 mt-3"  style="padding: 2px 2px; float:end;"> Codex </a>
+<a href="{% url 'CloaksMart:my_profile' %}" class="btn btn-outline-light fs-3 mt-3"  style="padding: 2px 2px; float:end;"> Clan Lookup </a>
+
+<!-- Section-->
+<div class="card-header bg-transparent" style: "position: relative;" >
+
+<img src="../../static/site_images/cm10.png" class="mb-0 w-100 h-25 ps-0 mt-0 "  alt="CloaksMart Logo" />
+
+    <div class="container fw-bolder fs-5" id="fp" style="position: absolute; margin: -45px 25px; padding: 5px;" >
+            <fp></fp> 
+    </div>
+</div>
+
+
+<button type="button" class="collapsible mb-2 fw-bolder" >Filters</button>
+     <div class="content px-1 ps-1 mt-5 fw-bolder" style= "overflow-wrap: break-word; font-size: 1em; width: 15%; float:left;">
+         
+         <form action="/CloaksMart/listings/" method="post" id="form" style= "overflow-wrap: break-word; font-size: 1em; color:#F8F8F8;">
+             <input type="submit" value="Search" class="mb-2">
+             <div class="scrollable-div">
+             {% csrf_token %}
+             {{ form_django.as_p}}
+             
+             
+             
+         </form>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+         {{ form_django.media.js }}
+         {{ form_django.media.css }}
+         </div>
+         
+     </div>
+ 
+<section class="py-0" id="listing_card">
+
+        
+    <div class="container-fluid px-2 px-lg-2 mt-0 justify-content-end " style= " width: 100%; float:left;" id="listings-container">
+        <div style="display: none;" id="loading"></div>
+           
+        <div class="card-header p-1 pt-0 border-top-0 bg-transparent">
+                    
+        
+             <div class="mt-3 mb-0 float-end"> 
+             <b href="javascript:goToPreviousPage()" id="previous-button" class="btn btn-outline-light">Prev Page</b>
+             <b href="javascript:goToNextPage()" id="next-button" class="btn btn-outline-light">Next Page</b> 
+             </div>
+            <br><br><br>
+            
+            <div class="row p-1 pt-0 border-top-0 w-100">
+            
+            <div class="row gx-3 gx-lg-3 row-cols-auto row-cols-md-auto row-cols-xl-5 justify-content-center" id="container" style="transform: scale(1);">
+                    
+                    
+                    <div class="col mb-5">
+                        <div class="card h-100" style="background-color:#323439; color:#F8F8F8; box-shadow: 0 0 10px 1px black;">
+                            
+                            <!-- Token ID-->
+                            <h4 class="fw-bolder pt-0 ps-1 pb-0 mb-1"><p></p></h4>
+                            <!-- Price ETH-->
+                            <h5 class="fw-bolder pt-0 ps-1 pb-0 mb-0"><p></p></h5>
+                            <!-- image-->
+                            <div class="hoverMeta" id="elementToHover">
+                                <div class="imgBox">
+                                    <img src="../../static/site_images/Surprised_651-2.png" class="card-img-top"  alt="Cloak" />
+                                </div>
+                            </div>
+                            <div class="popMeta" id="elementToPopup">
+                               
+                            </div>
+                            <!--  details-->
+                            <div class="card-body p-4" id="card_contents">
+                                <div class="text-start fs-6">
+                                    <!-- # traits-->
+                                    <h6 class="fw-bolder mb-2 fs-5" style=" margin: -15px 0px; text-align: right;"><p></p></h6>
+                                    
+                                    <!-- Stats-->
+                                    <h5 class="fw-bolder mb-0 fs-5" style="text-decoration: underline; text-align: left; "><p></p></h6>
+                                    <!-- AVG Stats-->
+                                    <h6 class="fw-bolder mb-1 fs-6"><p></p></h6>
+                                    <!-- Collection Rank Stats-->
+                                    <h6 class="fw-bolder mb-2 fs-6"><p></p></h6>
+                                    <!-- Percentile Rank Stats-->
+                                    <h6 class="fw-bolder mb-3 fs-6"><p></p></h6>
+                                </div>
+                                    
+                                <div class="text-start">
+                                    <!-- Power-->
+                                    <h7 class="fw-bolder mb-2"><p></p></h7>
+                                    <div class="w3-light-grey">
+                                          <div id="power_bar" class="w3-container w3-red fs-6 " style="height:24px; width:0%; padding-left:2px; padding-right:0.1px;"></div>
+                                    </div>
+                                    
+                                    <!-- Agility-->
+                                    <h7 class="fw-bolder mb-2"><p></p></h7>
+                                    <div class="w3-light-grey">
+                                          <div id="agility_bar" class="w3-container w3-vivid-yellowish-green fs-6 " style="height:24px; width:0%; padding-left:2px; padding-right:0.1px;"></div>
+                                    </div>
+                                    
+                                    <!-- Magic-->
+                                    <h7 class="fw-bolder mb-2"><p></p></h7>
+                                    <div class="w3-light-grey">
+                                          <div id="magic_bar" class="w3-container w3-blue fs-6 " style="height:24px; width:0%; padding-left:2px; padding-right:0.1px;"></div>
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
+                            
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a href="" class="btn btn-outline-light mt-auto"> <p></p> </a></div>
+                            </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            <span id=”page-number”>
+                
+            </div>
+        </div>
+    </div>
+</section>            
+
+
+
+<script type="text/javascript">
+    
+    const card1 = document.querySelector("#container");
+    let counter = 0;
+    var db = [
+        {% for row in listings_db %}
+            {%if not forloop.first%}, {% endif %}
+            {
+                "token_id":"{{row.token_id}}",
+                "price_eth":"{{row.price_eth}}",
+                "price_usd":"{{row.price_usd}}",
+                "marketplace":"{{row.marketplace}}",
+                "marketplace_icon":"{{row.marketplace_icon}}",
+                "url":"{{row.url}}",
+                "royalty":"{{row.royalty}}",
+                "seller":"{{row.seller}}",
+                "image":"{{row.image}}",
+                "power":"{{row.power}}",
+                "magic":"{{row.magic}}",
+                "agility":"{{row.agility}}",
+                "statsAvg":"{{row.statsAvg}}",
+                "collection_rank":"{{row.collection_rank}}",
+                "percentile":"{{row.percentile}}",
+                "accessory":"{{row.accessory}}",
+                "clan":"{{row.clan}}",
+                "form":"{{row.form}}",
+                "type_cloak":"{{row.type_cloak}}",
+                "num_traits": "{{row.num_traits}}",
+                "amulet":"{{row.amulet}}",
+                "animal_wrap":"{{row.animal_wrap}}",
+                "archer_ears":"{{row.archer_ears}}",
+                "archer_hair":"{{row.archer_hair}}",
+                "arm_style":"{{row.arm_style}}",
+                "beard":"{{row.beard}}",
+                "chain":"{{row.chain}}",
+                "chest":"{{row.chest}}",
+                "cloak":"{{row.cloak}}",
+                "eyewear":"{{row.eyewear}}",
+                "face_mask":"{{row.face_mask}}",
+                "headband": "{{row.headband}}",
+                "headgear":"{{row.headgear}}",
+                "mouth":"{{row.mouth}}",
+                "shoulder_gear":"{{row.shoulder_gear}}",
+                "smoke":"{{row.smoke}}",
+                "symbol":"{{row.symbol}}",
+                "warpaint":"{{row.warpaint}}"
+                    
+            }
+        {% endfor %}
+        ]
+        
+    let num_rows = 0;
+    {% for row in listings_db %}
+    num_rows = num_rows +1;
+    {% endfor %}
+    
+    //remove the first card aka the template that the for loop copies
+    //document.getElementById('container').removeChild(document.getElementById('container').getElementsByTagName('div')[0]);
+    
+    //pagination
+    let itemsPerPage = 50; // Number of items to display per page
+    if(num_rows<itemsPerPage){
+        if(counter== 0){
+            itemsPerPage = num_rows;
+            }else{
+            itemsPerPage = num_rows - 1;
+            }
+    }
+    //document.write(itemsPerPage);
+    let currentPage = 1; // Initial page number
+    const data = document.querySelector("#container");
+    
+    
+    function displayHeader(){
+        fp = document.querySelector("fp");
+        fp.innerText = "Floor Price: {{floor_price}} ETH";
+        fp.style.color = "white";
+    }
+    
+    <!-- toggle the filter container and resize listings container -->    
+    var coll = document.getElementsByClassName("collapsible");
+    var lc = document.getElementById('listings-container');
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "inline-block") {
+          lc.style.width="100%";
+          content.style.display = "none";
+          
+        } else {
+          lc.style.width="85%";
+          content.style.display = "inline-block";
+          
+        }
+      });
+    }
+
+    function displayItems(page) {
+      
+     const startIndex = (page - 1) * itemsPerPage;
+     const endIndex = startIndex + itemsPerPage;
+     
+      
+     if (counter == 0){
+      for (let i=startIndex; i<endIndex; i++){
+              
+              
+              let card = card1.children[0], newCard=card.cloneNode(true),ps=newCard.querySelectorAll("p"), url= newCard.querySelector("a"), img = newCard.querySelector("img");
+              
+              power = newCard.querySelector("#power_bar");
+              power.style.width = db[i]["power"] + '%'; 
+              power.innerHTML = db[i]["power"];
+              
+              agility = newCard.querySelector("#agility_bar");
+              agility.style.width = db[i]["agility"] + '%'; 
+              agility.innerHTML = db[i]["agility"];
+              
+              magic = newCard.querySelector("#magic_bar");
+              magic.style.width = db[i]["magic"] + '%'; 
+              magic.innerHTML = db[i]["magic"];
+              
+              
+             
+              ps[0].innerText = "CLOAKS #" + db[i]["token_id"];
+              
+              if(db[i]["price_eth"] == 1010){
+                  ps[1].innerText = "Unlisted";
+              }else{
+                  ps[1].innerText = db[i]["price_eth"] + " ETH";
+                  }
+                  
+              ps[2].innerText = "Traits: " + db[i]["num_traits"];
+              ps[3].innerText = "Stats" ;
+              ps[4].innerText = "Average levels: " + db[i]["statsAvg"];
+              ps[5].innerText = "Levels rank: " + db[i]["collection_rank"] + "/20,000";
+              ps[6].innerText = "Levels percentile: " + "Top " + db[i]["percentile"] + "%";
+              ps[7].innerText = "Power: " + db[i]["power"] + "/100";
+              ps[8].innerText = "Agility: " + db[i]["agility"]  + "/100";
+              ps[9].innerText = "Magic: " + db[i]["magic"] + "/100";
+              
+              ps[10].innerText = "Buy Now";
+    
+              if(db[i]["url"] == 1010){
+                  url.href = "https://opensea.io/assets/ethereum/0x0c56f29b8d90eea71d57cadeb3216b4ef7494abc/" + db[i]["token_id"];
+              }else{
+                  url.href = db[i]["url"];
+              }
+              
+              img.src = "../../static/Images/"+db[i]["token_id"]+".png";
+              //img.src = "../../static/site_images/Surprised_651-2.png";
+              
+              card1.appendChild(newCard);    
+              
+             
+                      
+          } 
+          
+              document.getElementById('container').removeChild(document.getElementById('container').getElementsByTagName('div')[0]);
+              counter = 1;
+              
+              
+              
+      }
+      
+    if (counter == 1){
+     for (let i=startIndex; i<endIndex; i++){
+             let card = card1.children[0], newCard=card.cloneNode(true),ps=newCard.querySelectorAll("p"), url= newCard.querySelector("a"), img = newCard.querySelector("img");
+             
+             power = newCard.querySelector("#power_bar");
+             power.style.width = db[i]["power"] + '%'; 
+             power.innerHTML = db[i]["power"];
+             
+             agility = newCard.querySelector("#agility_bar");
+             agility.style.width = db[i]["agility"] + '%'; 
+             agility.innerHTML = db[i]["agility"];
+             
+             magic = newCard.querySelector("#magic_bar");
+             magic.style.width = db[i]["magic"] + '%'; 
+             magic.innerHTML = db[i]["magic"];
+             
+             
+             ps[0].innerText = "CLOAKS #" + db[i]["token_id"];
+             
+             if(db[i]["price_eth"] == 1010){
+                 ps[1].innerText = "Unlisted";
+             }else{
+                 ps[1].innerText = db[i]["price_eth"] + " ETH";
+                 }
+                 
+                 
+             ps[2].innerText = "Traits: " + db[i]["num_traits"];
+             ps[3].innerText = "Stats";
+             ps[4].innerText = "Average levels: " + db[i]["statsAvg"];
+             ps[5].innerText = "Levels rank: " + db[i]["collection_rank"];
+             ps[6].innerText = "Levels percentile: " + "Top " + db[i]["percentile"] + "%";
+             ps[7].innerText = "Power: " + db[i]["power"] + "/100";
+             ps[8].innerText = "Agility: " + db[i]["agility"]  + "/100";
+             ps[9].innerText = "Magic: " + db[i]["magic"] + "/100";
+             
+             ps[10].innerText = "Buy Now";
+             
+             if(db[i]["url"] == 1010){
+                 url.href = "https://opensea.io/assets/ethereum/0x0c56f29b8d90eea71d57cadeb3216b4ef7494abc/" + db[i]["token_id"];
+             }else{
+                 url.href = db[i]["url"];
+             }
+   
+             img.src = "../../static/Images/"+db[i]["token_id"]+".png";
+             //img.src = "../../static/Images/3.png";
+             card1.replaceChild(newCard,card1.children[i-((currentPage-1)*itemsPerPage)]);    
+             
+                     
+         }
+         
+         
+     } 
+
+
+    }
+    
+    function goToPreviousPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        displayItems(currentPage);
+        move_stats_bars();
+        loadTraits(currentPage);
+      }
+    }
+    
+    function goToNextPage() {
+        if (currentPage < Math.floor( num_rows/ itemsPerPage)) {
+        currentPage++;
+        displayItems(currentPage);
+        move_stats_bars();
+        loadTraits(currentPage);
+        
+     
+        
+        }
+    }
+    
+    
+    <!-- overlay metadata on image hover -->
+    function loadTraits(page){
+         for(let i=0; i<50; i++){
+         const hoverElem = card1.querySelectorAll("#elementToHover");
+         const popupElem = card1.querySelectorAll("#elementToPopup");
+         
+
+         hoverElem[i].addEventListener('mouseenter', ()=>{
+                const trait_names = ['accessory', 'amulet', 'animal_wrap', 'archer_ears', 'archer_hair', 'beard', 'chain',
+                                     'chest', 'clan', 'cloak','eyewear', 'face_mask', 'headband', 'headgear', 'form', 'mouth', 'shoulder_gear',
+                                     'smoke', 'symbol', 'type_cloak', 'warpaint'];
+                                     
+                const labels = ['Accessory', 'Amulet', 'Animal Wrap', 'Archer Ears', 'Archer Hair', 'Beard', 'Chain',
+                                     'Chest', 'Clan', 'Cloak','Eyewear', 'Face Mask', 'Headband', 'Headgear', 'Form', 'Mouth', 'Shoulder Gear',
+                                     'Smoke', 'Symbol', 'Type', 'Warpaint'];
+                popupElem[i].innerText = '';
+                
+                popupElem[i].setAttribute('style', 'white-space: pre;');
+                for(let j=0; j<trait_names.length; j++){
+                
+                    if(db[i+((page-1) * 50)][trait_names[j]] != 'None' && db[i+((page-1) * 50)][trait_names[j]] != 'No Form' && db[i+((page-1) * 50)][trait_names[j]] != 'No Clan' ){
+                        popupElem[i].textContent += labels[j] + ': ' + db[i+((page-1) * 50)][trait_names[j]] + '\r\n';
+                        popupElem[i].style.display = 'block';
+                        
+                            }
+                        }
+                 
+                    
+                    });
+                    
+                
+                
+         hoverElem[i].addEventListener('mouseleave', ()=>{
+                popupElem[i].style.display = 'none';
+                
+                });
+         }
+    }
+    
+    
+     
+    <!-- move the stat bars to value on page load -->
+    function move(max_value, elem) {
+      var width = 0;
+      var id = setInterval(frame, 10);
+      function frame() {
+        if (width >= max_value) {
+          clearInterval(id);
+        } else {
+          width++; 
+          elem.style.width = width + '%'; 
+          elem.innerHTML = width * 1;
+        }
+      }
+    }
+    
+    
+    function move_stats_bars(){
+    
+        const list = [card1.querySelectorAll("#power_bar"), card1.querySelectorAll("#agility_bar"),card1.querySelectorAll("#magic_bar")];
+        
+        for(let i=0;i<list.length;i++){
+            let x = 0;
+        
+            // Using for...of
+            for (const value of list[i].values()) {
+              
+              move(value.textContent, list[i][x]);
+              x++;
+            }
+        }
+      }
+      
+      
+      
+      function create(text) {
+          var t = document.createElement('p');  
+          
+          t.innerText = text;
+          
+          t.style.color = "white"
+          t.style.borderRadius="20px"
+          t.style.textAlign="center"
+          t.style.fontSize="20px"
+          t.style.marginBottom="3em"
+          
+          document.body.appendChild(t);
+        }
+        
+        function create_img(img) {
+            var t = document.createElement('img');  
+            
+            t.src = img
+            t.style.width="20%"
+            t.style.marginLeft="auto"
+            t.style.marginRight="auto"
+            t.style.display = "block"
+            
+            document.body.appendChild(t);
+          }
+        
+      function no_results(){
+          document.getElementById('container').removeChild(document.getElementById('container').getElementsByTagName('div')[0]);
+          create_img("../../static/site_images/Surprised_651-2.png");
+          create("ERR [69]: No listings found for chosen filters. NGMI, Migo!");
+      }
+      
+      function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+              
+      // Attach event listeners
+      document.getElementById('previous-button').addEventListener('click', goToPreviousPage);
+      document.getElementById('next-button').addEventListener('click', goToNextPage);
+      document.getElementById('form').addEventListener('submit', function(event) {
+          var loader = document.getElementById("loading");
+          loader.style.display = "block"; 
+          
+          // Strongly recommended: Hide loader after 20 seconds, even if the page hasn't finished loading
+          setTimeout(hideLoader, 150 * 1000);
+      });
+      
+      // Display initial page
+      if(num_rows == 0){
+          no_results();
+      }else{
+          displayItems(currentPage);
+          move_stats_bars();
+          loadTraits(currentPage);
+      }
+      
+      displayHeader();
+      
+     function hideLoader() {
+       $('#loading').hide();
+     }
+   
+
+      
+</script> 
+</body>
+</html>
+

@@ -1,0 +1,542 @@
+{% load static %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta http-equiv="Content-Style-Type" content="text/css">
+      <title> Cloaks Mart: Dashboard</title>
+      <meta name="Generator" content="Cocoa HTML Writer">
+      <meta name="CocoaVersion" content="2022.7">
+      
+      <style type="text/css">
+      
+      .imgBox {
+        display: inline-block;
+        overflow: hidden;
+      }
+      .imgBox img {
+        display: block; 
+        transition: .3s ease-in-out;
+      }
+      .imgBox:hover img {
+        transform: scale(1.2);
+        
+      } 
+      
+      /* width */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      /* Track */
+      ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey; 
+        border-radius: 10px;
+      }
+     
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #155D21; 
+        border-radius: 10px;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #155D21; 
+      }
+      
+      .scrollable-div {
+      height: 750px; /* set a fixed height for the div */
+      overflow-y: scroll; /* enable vertical scrollbar */
+       
+    }
+    
+    a {
+      text-decoration: none;
+      display: inline-block;
+      padding: 8px 16px;
+    }
+    
+    a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+    
+    .previous {
+      background-color: #f1f1f1;
+      color: black;
+    }
+    
+    .next {
+      background-color: #f1f1f1;
+      color: black;
+    }
+    
+    .round {
+      border-radius: 50%;
+    }
+    
+    .nosifer-regular {
+  font-family: "Nosifer", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+    .nosifer-body {
+  font-family: "Nosifer", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+      </style>
+
+
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="{% static 'styles.css' %}">  
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-highway.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-safety.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-vivid.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet">
+</head>  
+
+<a href="{% url 'CloaksMart:codex' %}" class="btn btn-outline-light fs-3 mt-3"  style="padding: 2px 2px; float:end;"> Codex </a>
+<a href="{% url 'CloaksMart:listings' %}" class="btn btn-outline-light fs-3 mt-3"  style="padding: 2px 2px; float:end;"> Marketplace </a>
+
+<body style="background-color:#1E283B;">
+
+<section class="py-0" id="listing_card">
+<h4 class="nosifer-regular pt-2 ps-2 pb-0 mb-1 fs-2" style="color:#ffffff;">Clan Lookup</h4>
+    
+         <form action="{% url 'CloaksMart:my_profile' %}"method="POST" id="form_dashboard"  class="nosifer-regular ps-3 mb-4" style="color:white;">
+             {% csrf_token %} 
+             {{ form_profile }}
+            
+             <input type="submit" value="Enter">
+
+             
+         </form>
+        
+    <div class="container-fluid px-2 px-lg-2 mt-0 justify-content-center " style= " width: 80%;">
+           
+        <div class="card-header p-1 pt-0 border-top-0 bg-transparent">
+                    
+            <div class="row p-1 pt-0 border-top-0 w-100">
+                
+            <div class="row gx-3 gx-lg-3 row-cols-auto row-cols-md-auto row-cols-xl-4 justify-content-center" id="container" style="transform: scale(1);">
+                    
+                    
+                    <div class="col mb-5 " id="card_contents">
+                        <div class="card h-100" style="background-color:#E0E0E0; box-shadow: 0 0 10px 1px black;">
+                            <!-- clan name -->
+                            <h3 class="nosifer-regular pt-3 ps-1 pb-0 mb-1 justify-content-center" style="text-align: center; margin: 0px 0px;" ><p></p></h3>
+                          
+                            
+                            <!-- info-->
+                            <div class="card-body p-4" id="cb">
+                                <!--# members-->
+                                <h5 class="fw-bolder pt-0 ps-1 pb-0 mb-0" style="float:right;"><p></p></h5>
+                                
+                                <!-- image-->
+                                <div class="imgBox" style= "position:relative;">
+                                    <img src="../../static/site_images/Surprised_651-2.png" class="card-img-top" alt="Cloak" id="cloaks_imgs" />
+                                    
+                                    <a class="previous round" style= "position:absolute; bottom: 0px; left:0; text-decoration: none;" id="prev_button_clans">&#8592;</a>
+                                    <a class="next round" style= "position:absolute; bottom: 0px; right:0; text-decoration: none;" id="next_button_clans">&#8594;</a>
+                                    
+                                </div>
+                                
+                                <div class="text-start fs-6" style= " width: 50%; float:left;" id="cloaks_forms">
+                                
+                                    <!-- Forms-->
+                                    <h5 class="nosifer-regular mb-4 fs-6" style="text-align: center; "><headers></headers></h6>
+                                    <h6 class="fw mb-4 fs-6" style=" margin: -15px 0px; text-align: center;">
+                                        <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> </h6>
+                                   
+                                </div>
+                                
+                                <div class="text-start fs-6" style= " width: 50%; float:left;" id="cloaks_types">
+                                
+                                    <!-- Types-->
+                                    <h5 class="nosifer-regular mb-4 fs-6" style="text-align: center; "><headers></headers></h6>
+                                    <h6 class="fw mb-4 fs-6" style=" margin: -15px 0px; text-align: center;">
+                                        <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> </h6>
+                                   
+                                </div>
+                                
+                                
+                                <div class="text-start fs-6" style= " width: 50%;  float:right;" id="cloaks_accs">
+                                
+                                    <!-- accs-->
+                                    <h5 class="nosifer-regular mb-4 fs-6" style="text-align: center; "><headers></headers></h6>
+                                    <h6 class="fw mb-4 fs-6" style=" margin: -15px 0px; text-align: center;">
+                                        <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> </h6>
+                                   
+                                </div>
+                                
+                                <div class="text-start fs-6" style= " width: 50%; float:left;" id="cloaks_amulets">
+                                
+                                    <!-- amulets-->
+                                    <h5 class="nosifer-regular mb-4 fs-6" style="text-align: center; "><headers></headers></h6>
+                                    <h6 class="fw mb-4 fs-6" style=" margin: -15px 0px; text-align: center;">
+                                        <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> </h6>
+                                   
+                                </div>
+                                    
+                                 
+                                <div class="text-start fs-6" style= " width: 50%; float:end;" id="cloaks_symbols">
+                                
+                                    <!-- symbols-->
+                                    <h5 class="nosifer-regular mb-4 fs-6" style="text-align: center; "><headers></headers></h6>
+                                    <h6 class="fw mb-2 fs-6" style=" margin: -15px 0px; text-align: center;">
+                                        <p></p> <p></p> <p></p> <p></p> <p></p> <p></p> <p></p>  </h6>
+                                   
+                                </div>
+                                   
+                                <div class="text-start mt-2" style= "width: 100%; float:left;" >
+                                    <!-- Levels-->
+                                    <h5 class="nosifer-regular mb-0 fs-6" style="text-align: center; "><headers></headers></h6>
+                                    
+                                    <!-- Power-->
+                                    <h7 class="fw-bolder mb-2"><p></p></h7>
+                                    <div class="w3-light-grey">
+                                          <div id="power_bar" class="w3-container w3-red fs-6 " style="height:24px; width:0%; padding-left:2px; padding-right:0.1px;"></div>
+                                    </div>
+                                    
+                                    <!-- Agility-->
+                                    <h7 class="fw-bolder mb-2"><p></p></h7>
+                                    <div class="w3-light-grey">
+                                          <div id="agility_bar" class="w3-container w3-vivid-yellowish-green fs-6 " style="height:24px; width:0%; padding-left:2px; padding-right:0.1px;"></div>
+                                    </div>
+                                    
+                                    <!-- Magic-->
+                                    <h7 class="fw-bolder mb-2"><p></p></h7>
+                                    <div class="w3-light-grey">
+                                          <div id="magic_bar" class="w3-container w3-blue fs-6 " style="height:24px; width:0%; padding-left:2px; padding-right:0.1px;"></div>
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
+                            
+                    </div>
+                    
+                </div>
+            </div>
+                
+            </div>
+        </div>
+    </div>
+</section>            
+
+
+
+<script type="text/javascript">
+
+document.getElementById('form_dashboard').addEventListener('submit', function(event){}); 
+
+//summary df
+var clan = {{ clans|safe }};
+var num_clan =  {{num_clans|safe}};
+var type = {{types|safe}};
+var num_type = {{num_types|safe}};
+var form = {{cloak_forms|safe}};
+var num_form = {{num_forms|safe}};
+
+// individual clan df
+var all_forms = {{all_forms|safe}};
+var df2_clans = {{df2_clans|safe}};
+var all_types = {{all_types|safe}};
+var all_accs = {{all_accs|safe}};
+var all_amulets = {{all_amulets|safe}};
+var all_symbols = {{all_symbols|safe}};
+var df2_members = {{df2_members|safe}};
+var total_power = {{total_power|safe}};
+var total_magic = {{total_magic|safe}};
+var total_agility = {{total_agility|safe}};
+var images = {{images|safe}};
+
+var img_ind = [0,0,0,0,0,0,0,0];
+
+const card1 = document.querySelector("#container");
+for (let i=0; i<8; i++){
+        if(num_clan[i] > 0){
+        
+            let card = card1.children[0], newCard=card.cloneNode(true),ps=newCard.querySelectorAll("p"), 
+            img = newCard.querySelector("img"), headers = newCard.querySelectorAll("headers"), nextbtn = newCard.querySelector("#next_button_clans");
+           
+            prevbtn = newCard.querySelector("#prev_button_clans");
+             
+            newCard.id = "img_" + i;
+            nextbtn.id = i;
+            prevbtn.id = i;
+            
+            ps[0].innerText = df2_clans[i];
+            
+            ps[1].innerText = "Members: " + df2_members[i];
+            
+            
+            // forms and types setup, fill undefined with empty str
+            for(let j=0; j<9; j++){
+                if(typeof(all_forms[i][j])=="undefined"){
+                all_forms[i][j] = "";
+                }
+                
+                if(typeof(all_types[i][j])=="undefined"){
+                all_types[i][j] = "";
+                 }
+                 
+                if(typeof(all_accs[i][j])=="undefined"){
+                all_accs[i][j] = "";
+                 }
+            
+            
+                
+        
+            
+            if(all_accs[i][0]==""){
+                headers[2].innerText = "Accessories: None";
+            }else{
+                headers[2].innerText = "Accessories";
+            }
+            
+            
+            }
+            
+            for(let j=0; j<11; j++){
+                if(typeof(all_amulets[i][j])=="undefined"){
+                all_amulets[i][j] = "";
+                }
+                
+                }
+            
+            for(let j=0; j<7; j++){
+                if(typeof(all_symbols[i][j])=="undefined"){
+                all_symbols[i][j] = "";
+                }
+                
+                 if(all_symbols[i][0]==""){
+                     headers[4].innerText = "Symbols: None";
+                 }else{
+                     headers[4].innerText = "Symbols";
+                 }
+                 
+                
+                }
+                
+                
+            headers[0].innerText = "Forms";    
+            headers[2].innerText = "Accessories";
+            headers[3].innerText = "Amulets";
+            headers[4].innerText = "Symbols";
+            
+            if(all_forms[i][0]==""){
+                ps[2].innerText = "None";
+            }else{
+                ps[2].innerText = all_forms[i][0];
+            }  
+            
+            ps[3].innerText = all_forms[i][1];
+            ps[4].innerText = all_forms[i][2];
+            ps[5].innerText = all_forms[i][3];
+            ps[6].innerText = all_forms[i][4];
+            ps[7].innerText = all_forms[i][5];
+            ps[8].innerText = all_forms[i][6];
+            ps[9].innerText = all_forms[i][7];
+            ps[10].innerText = all_forms[i][8];
+            
+            headers[1].innerText = "Types";
+            ps[11].innerText = all_types[i][0];
+            ps[12].innerText = all_types[i][1];
+            ps[13].innerText = all_types[i][2];
+            ps[14].innerText = all_types[i][3];
+            ps[15].innerText = all_types[i][4];
+            ps[16].innerText = all_types[i][5];
+            ps[17].innerText = all_types[i][6];
+            ps[18].innerText = all_types[i][7];
+            ps[19].innerText = all_types[i][8];
+            
+            if(all_accs[i][0]==""){
+                ps[20].innerText = "None"
+            }else{
+                ps[20].innerText = all_accs[i][0];
+            }
+            
+            ps[21].innerText = all_accs[i][1];
+            ps[22].innerText = all_accs[i][2];
+            ps[23].innerText = all_accs[i][3];
+            ps[24].innerText = all_accs[i][4];
+            ps[25].innerText = all_accs[i][5];
+            ps[26].innerText = all_accs[i][6];
+            ps[27].innerText = all_accs[i][7];
+            ps[28].innerText = all_accs[i][8];
+            
+            
+            if(all_amulets[i][0]==""){
+                ps[29].innerText = "None";
+            }else{
+                ps[29].innerText = all_amulets[i][0];
+            }
+            
+            ps[30].innerText = all_amulets[i][1];
+            ps[31].innerText = all_amulets[i][2];
+            ps[32].innerText = all_amulets[i][3];
+            ps[33].innerText = all_amulets[i][4];
+            ps[34].innerText = all_amulets[i][5];
+            ps[35].innerText = all_amulets[i][6];
+            ps[36].innerText = all_amulets[i][7];
+            ps[37].innerText = all_amulets[i][8];
+            ps[38].innerText = all_amulets[i][9];
+            ps[39].innerText = all_amulets[i][10];
+            
+            if(all_symbols[i][0]==""){
+                ps[40].innerText = "None";
+            }else{
+                ps[40].innerText = all_symbols[i][0];
+            }
+            
+            ps[41].innerText = all_symbols[i][1];
+            ps[42].innerText = all_symbols[i][2];
+            ps[43].innerText = all_symbols[i][3];
+            ps[44].innerText = all_symbols[i][4];
+            ps[45].innerText = all_symbols[i][5];
+            ps[46].innerText = all_symbols[i][6];
+            
+            headers[5].innerText = "Levels";
+            ps[47].innerText = "Total Power: " + total_power[i] + "/" + 100*df2_members[i] ;
+            ps[48].innerText = "Total Agility: " + total_agility[i] + "/" + 100*df2_members[i];
+            ps[49].innerText = "Total Magic: " + total_magic[i] + "/" + 100*df2_members[i];
+            
+            //stat bars 
+            power = newCard.querySelector("#power_bar");
+            power.style.width = total_power[i]/ df2_members[i] + '%'; 
+            power.innerHTML = (total_power[i]/ df2_members[i]).toFixed(0);
+            
+            agility = newCard.querySelector("#agility_bar");
+            agility.style.width = total_agility[i]/ df2_members[i]  + '%'; 
+            agility.innerHTML = (total_agility[i]/ df2_members[i]).toFixed(0);
+            
+            magic = newCard.querySelector("#magic_bar");
+            magic.style.width = total_magic[i]/ df2_members[i]  + '%'; 
+            magic.innerHTML = (total_magic[i]/ df2_members[i]).toFixed(0);
+            
+            //img setup
+            img.src = "../../static/" + images[i][0];
+            
+            card1.appendChild(newCard);    
+        
+         
+    }
+    
+    
+    } 
+    document.getElementById('container').removeChild(document.getElementById('container').getElementsByTagName('div')[0]);
+
+//how to access specific card image
+//const child = document.getElementById('container').getElementsByTagName("img")[0];
+//child.src = "../../static/" + images[3][0];
+
+//how to access specific card button
+//const child_btn = document.getElementById('container').getElementsByClassName("next")[1];
+//child_btn.style.color = "purple";
+
+//how to access specific card 
+//const child_card = document.getElementById('container').getElementsByClassName("card")[1];
+//child_card.style.backgroundColor = "purple";
+
+
+function prevImg(button_id) {
+    const child = document.getElementById('container').getElementsByTagName("img")[button_id];
+    
+    if(img_ind[button_id] == 0){
+        img_ind[button_id] = 0;
+    }else{
+        img_ind[button_id] = img_ind[button_id]-1;
+    }
+    child.src = "../../static/" + images[button_id][img_ind[button_id]];
+}
+
+function nextImg(button_id) {
+    const child = document.getElementById('container').getElementsByTagName("img")[button_id];
+    
+    if(img_ind[button_id] == (df2_members[button_id] - 1)){
+        img_ind[button_id] = df2_members[button_id] - 1;
+    }else{
+        img_ind[button_id] = img_ind[button_id]+1;
+    }
+    child.src = "../../static/" + images[button_id][img_ind[button_id]];
+        
+}
+   
+//event listeners for scrolling through clan images
+// change bg color for clan cards
+for (let i=0; i<num_clan.length; i++){
+    document.getElementById('container').getElementsByClassName("next")[i].addEventListener('click', function(event){
+        const clicked_button_id = event.target.id;
+        nextImg(clicked_button_id);
+        //document.write(clicked_button_id);
+        
+        });
+        
+    document.getElementById('container').getElementsByClassName("previous")[i].addEventListener('click', function(event){
+        const clicked_button_id = event.target.id;
+        prevImg(clicked_button_id);
+        //document.write(clicked_button_id);
+        
+        });
+        
+    const child_card = document.getElementById('container').getElementsByClassName("card")[i];
+    child_card.style.color = "#F8F8F8";
+    if(df2_clans[i] == "Sky"){
+        child_card.style.backgroundColor = "#3372CD";
+        child_card.style.boxShadow = "black";
+        
+    }
+    
+    if(df2_clans[i] == "Fire"){
+        child_card.style.backgroundColor = "#962929";
+        child_card.style.color = "#F8F8F8";
+    }
+    
+    if(df2_clans[i] == "Earth"){
+        child_card.style.backgroundColor = "#166426";
+        
+    }
+    
+    if(df2_clans[i] == "Darkness"){
+        child_card.style.backgroundColor = "#211f26";
+        
+    }
+    
+    if(df2_clans[i] == "Crystal"){
+        child_card.style.backgroundColor = "#5A488B";
+        
+    }
+    
+    if(df2_clans[i] == "Water"){
+        child_card.style.backgroundColor = "#0A946E";
+        
+    }
+    
+    if(df2_clans[i] == "No Clan"){
+        child_card.style.backgroundColor = "#48371C";
+        
+    }
+    
+    if(df2_clans[i] == "Steel"){
+        child_card.style.backgroundColor = "#323439";
+        
+    }
+ }
+
+
+</script> 
+
+
+</body>
+</html>

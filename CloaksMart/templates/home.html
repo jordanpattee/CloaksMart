@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">  
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-highway.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-safety.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-vivid.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    
+    <title>Cloaks Mart: Home</title>
+</head>
+<body style="background-color:#1E283B;">
+
+    <!-- Section-->
+    <div class="card-header bg-transparent" style: "position: relative;" >
+    <img src="../../static/site_images/cm10.png" class="mb-0 w-100 h-25 ps-0 mt-0 "  alt="CloaksMart Logo" />
+    </div>
+    
+         
+         
+    <div class="container-fluid px-2 px-lg-2 mt-0  " style= "display: flex; width: 100%; float:left;">
+    
+    
+        <div style= "display: flex; width: 50%; float:left;">
+            
+            <a href="{% url 'CloaksMart:listings' %}" class="btn btn-outline-light fs-1" style="display: inline-block; text-align: center; padding: 20px 20px;"> Marketplace </a>
+        </div>
+        
+        
+        <div style= "display: flex; width: 50%; float:left;">
+            
+           <a href="{% url 'CloaksMart:my_profile' %}" class="btn btn-outline-light fs-1" id="dashboard" style="display: inline-block; text-align: center; padding: 20px 20px;"> Dashboard </a>
+        </div>
+        
+        <div style= "display: flex; width: 50%; float:left;">
+            
+           <a href="{% url 'CloaksMart:forum_home' %}" class="btn btn-outline-light fs-1" id="forum" style="display: inline-block; text-align: center; padding: 20px 20px;"> Forum </a>
+        </div>
+        
+    
+    </div>
+ 
+</body>
+</html>
